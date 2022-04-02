@@ -1,0 +1,3 @@
+[submodule "misbat-dotsettings"]
+	path = misbat-dotsettings
+	url = git@github.com:michi-b/misbat-dotsettings.git
