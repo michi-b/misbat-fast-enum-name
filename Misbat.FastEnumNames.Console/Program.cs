@@ -1,19 +1,22 @@
 ﻿namespace Misbat.FastEnumNames.Console;
 
 [FastNamed]
-public enum TestEnum : ulong
+public enum TestEnum
 {
     Test1,
     Test2,
     Test3,
-
-    Test5 = Test1
+    Test7 = Test2,
+    Test8
 }
 
-public static partial class Program
+public static class Program
 {
-    static void Main()
+    private static void Main()
     {
+        foreach (var value in Enum.GetValues<TestEnum>())
+        {
+            System.Console.WriteLine($"enum with name {Enum.GetName(value)} has value {(int)value}");
+        }
     }
-
 }
