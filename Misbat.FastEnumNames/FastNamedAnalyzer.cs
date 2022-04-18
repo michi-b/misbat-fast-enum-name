@@ -11,12 +11,12 @@ namespace Misbat.FastEnumNames;
 
 [DiagnosticAnalyzer("C#")]
 [UsedImplicitly]
-public class NamedEnumAnalyzer : DiagnosticAnalyzer
+public class FastNamedAnalyzer : DiagnosticAnalyzer
 {
 
     // ReSharper disable once ArrangeObjectCreationWhenTypeEvident
     [SuppressMessage("Style", "IDE0090:Use 'new(...)'", Justification = "Analyzer does not handle target-typed new")]
-    private static readonly DiagnosticDescriptor EnumMembersMustNotShareValuesRule = new DiagnosticDescriptor(
+    public static readonly DiagnosticDescriptor EnumMembersMustNotShareValuesRule = new DiagnosticDescriptor(
         "NE0001",
         "Multiple members of fast named enum share the same value",
         "the member '{0}' of the fast named enum '{1}' has the value '{2}', which is already taken by the member '{3}'",
@@ -50,7 +50,7 @@ public class NamedEnumAnalyzer : DiagnosticAnalyzer
 
         //if enum does not have the fast named attribute, return
         if (!enumSymbol.GetAttributes()
-                .Any(ad => ad.IsClass("global::Misbat.FastEnumNames.FastNamedAttribute")))
+                .Any(ad => ad.IsClass("Misbat.FastEnumNames.FastNamed")))
         {
             return;
         }

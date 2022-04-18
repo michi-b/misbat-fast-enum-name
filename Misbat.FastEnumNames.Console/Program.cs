@@ -6,8 +6,7 @@ public enum TestEnum
     Test1,
     Test2,
     Test3,
-    Test7 = Test2,
-    Test8
+    Test5 = 1
 }
 
 public static class Program
