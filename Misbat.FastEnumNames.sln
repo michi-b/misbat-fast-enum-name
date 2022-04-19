@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Misbat.FastEnumNames", "Mis
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Misbat.FastEnumNames.Console", "Misbat.FastEnumNames.Console\Misbat.FastEnumNames.Console.csproj", "{025533A1-26B0-4F5A-81B3-FA58C91DEBF6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Misbat.FastEnumNames.Test", "Misbat.FastEnumNames.Test\Misbat.FastEnumNames.Test.csproj", "{0FAFDD18-0C2B-46A1-BE12-D899199CA417}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Misbat.FastEnumNames.Test", "Misbat.FastEnumNames.Test\Misbat.FastEnumNames.Test.csproj", "{0FAFDD18-0C2B-46A1-BE12-D899199CA417}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Misbat.FastEnumNames.Attributes", "Misbat.FastEnumNames.Attributes\Misbat.FastEnumNames.Attributes.csproj", "{3F5EB28C-1704-43E3-8339-297F8140C20D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +43,14 @@ Global
 		{0FAFDD18-0C2B-46A1-BE12-D899199CA417}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0FAFDD18-0C2B-46A1-BE12-D899199CA417}.Release|x86.ActiveCfg = Release|Any CPU
 		{0FAFDD18-0C2B-46A1-BE12-D899199CA417}.Release|x86.Build.0 = Release|Any CPU
+		{3F5EB28C-1704-43E3-8339-297F8140C20D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F5EB28C-1704-43E3-8339-297F8140C20D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F5EB28C-1704-43E3-8339-297F8140C20D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3F5EB28C-1704-43E3-8339-297F8140C20D}.Debug|x86.Build.0 = Debug|Any CPU
+		{3F5EB28C-1704-43E3-8339-297F8140C20D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F5EB28C-1704-43E3-8339-297F8140C20D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F5EB28C-1704-43E3-8339-297F8140C20D}.Release|x86.ActiveCfg = Release|Any CPU
+		{3F5EB28C-1704-43E3-8339-297F8140C20D}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

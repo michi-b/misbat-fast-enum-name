@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using JetBrains.Annotations;
 using Microsoft.CodeAnalysis;
@@ -13,21 +12,8 @@ namespace Misbat.FastEnumNames;
 [UsedImplicitly]
 public class FastNamedAnalyzer : DiagnosticAnalyzer
 {
-
-    // ReSharper disable once ArrangeObjectCreationWhenTypeEvident
-    [SuppressMessage("Style", "IDE0090:Use 'new(...)'", Justification = "Analyzer does not handle target-typed new")]
-    public static readonly DiagnosticDescriptor EnumMembersMustNotShareValuesRule = new DiagnosticDescriptor(
-        "NE0001",
-        "Multiple members of fast named enum share the same value",
-        "the member '{0}' of the fast named enum '{1}' has the value '{2}', which is already taken by the member '{3}'",
-        "Function",
-        DiagnosticSeverity.Warning,
-        true,
-        "Different fast named enum members with a shared value can't have their name reliably deduced.");
-
-
     public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
-        => ImmutableArray.Create(EnumMembersMustNotShareValuesRule);
+        => ImmutableArray.Create(Diagnostics.FastEnumMembersShareValue);
 
     public override void Initialize(AnalysisContext context)
     {
@@ -37,7 +23,7 @@ public class FastNamedAnalyzer : DiagnosticAnalyzer
         context.RegisterSymbolAction(AnalyzeSymbol, SymbolKind.NamedType);
     }
 
-    private void AnalyzeSymbol(SymbolAnalysisContext context)
+    private static void AnalyzeSymbol(SymbolAnalysisContext context)
     {
         var enumSymbol = (INamedTypeSymbol)context.Symbol;
         var underlyingType = enumSymbol.EnumUnderlyingType;
@@ -50,7 +36,7 @@ public class FastNamedAnalyzer : DiagnosticAnalyzer
 
         //if enum does not have the fast named attribute, return
         if (!enumSymbol.GetAttributes()
-                .Any(ad => ad.IsClass("Misbat.FastEnumNames.FastNamed")))
+                .Any(ad => ad.IsClass("global::Misbat.FastEnumNames.Attributes.FastNamedAttribute")))
         {
             return;
         }
@@ -62,7 +48,7 @@ public class FastNamedAnalyzer : DiagnosticAnalyzer
         {
             object constantValue = enumMemberSymbol.ConstantValue;
 
-            if (values.TryGetValue(constantValue, out var otherMemberWithSameValue))
+            if (values.TryGetValue(constantValue!, out var otherMemberWithSameValue))
             {
                 var declarationLocations = enumMemberSymbol.GetDeclarationLocations().ToArray();
 
@@ -70,41 +56,17 @@ public class FastNamedAnalyzer : DiagnosticAnalyzer
                 {
                     foreach (var location in declarationLocations)
                     {
-                        ReportEnumMembersShareValue(context, 
-                            enumSymbol, 
-                            enumMemberSymbol, 
+                        Diagnostics.ReportFastEnumMembersShareValue(context,
+                            enumSymbol,
+                            enumMemberSymbol,
                             otherMemberWithSameValue,
-                            constantValue, 
+                            constantValue,
                             location);
                     }
-                }
-                else
-                {
-                    ReportEnumMembersShareValue(context, 
-                        enumSymbol, 
-                        enumMemberSymbol, 
-                        otherMemberWithSameValue,
-                        constantValue, 
-                        Location.None);
                 }
             }
 
             values[constantValue] = enumMemberSymbol;
         }
-    }
-
-    private static void ReportEnumMembersShareValue(SymbolAnalysisContext context,
-        ISymbol enumSymbol,
-        ISymbol enumMemberSymbol,
-        ISymbol otherMemberWithSameValue,
-        object constantValue,
-        Location location
-    )
-    {
-        context.ReportDiagnostic(Diagnostic.Create(EnumMembersMustNotShareValuesRule,
-            location,
-            enumMemberSymbol.Name,
-            enumSymbol.Name,
-            constantValue, otherMemberWithSameValue.Name));
     }
 }

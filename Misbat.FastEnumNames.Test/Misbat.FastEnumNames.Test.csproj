@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Misbat.FastEnumNames.Attributes\Misbat.FastEnumNames.Attributes.csproj" />
     <ProjectReference Include="..\Misbat.FastEnumNames\Misbat.FastEnumNames.csproj" />
   </ItemGroup>
 

@@ -1,12 +1,13 @@
-﻿namespace Misbat.FastEnumNames.Console;
+﻿using Misbat.FastEnumNames.Attributes;
+
+namespace Misbat.FastEnumNames.Console;
 
 [FastNamed]
 public enum TestEnum
 {
     Test1,
     Test2,
-    Test3,
-    Test5 = 1
+    Test3 = Test2
 }
 
 public static class Program

@@ -21,4 +21,8 @@
     <AdditionalFiles Include="AnalyzerReleases.Unshipped.md" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Misbat.FastEnumNames.Attributes\Misbat.FastEnumNames.Attributes.csproj" />
+  </ItemGroup>
+
 </Project>
