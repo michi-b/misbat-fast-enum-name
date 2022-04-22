@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Composition;
 using System.Diagnostics;
@@ -10,6 +11,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Formatting;
 
 namespace Misbat.FastEnumNames;
 
@@ -46,14 +48,24 @@ public class FastEnumMembersShareValueFixProvider : CodeFixProvider
                 .First();
 
             context.RegisterCodeFix(CodeAction.Create(RemoveInitializationTitle,
-                ct => RemoveInitialization(context.Document, enumMemberDeclarationSyntax, ct),
+                ct => RemoveEnumMemberInitialization(context.Document, enumMemberDeclarationSyntax, ct),
                 RemoveInitializationTitle), diagnostic);
         }
     }
 
-    private Task<Document> RemoveInitialization(Document document, EnumMemberDeclarationSyntax enumMemberDeclaration,
+    private static async Task<Document> RemoveEnumMemberInitialization(Document document,
+        EnumMemberDeclarationSyntax originalSyntax,
         CancellationToken cancellationToken)
     {
-        return Task.FromResult(document);
+        var equalsValueClauseSyntax = originalSyntax.ChildNodes().OfType<EqualsValueClauseSyntax>().First();
+
+        var modifiedSyntax = originalSyntax
+            .RemoveNode(equalsValueClauseSyntax, SyntaxRemoveOptions.KeepNoTrivia)!
+            .WithAdditionalAnnotations(Formatter.Annotation);
+
+        var originalRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+        var modifiedRoot = originalRoot!.ReplaceNode(originalSyntax, modifiedSyntax);
+
+        return document.WithSyntaxRoot(modifiedRoot);
     }
 }
